@@ -12,4 +12,7 @@ const recipesController = require("../Controller/recipeController");
 // Fetch recipes from the database
 router.get("/getAllRecipes", recipesController.getRecipes);
 
+// Fetch a single recipe by ID
+router.get("/:id", recipesController.getRecipeById);
+
 module.exports = router;
