@@ -1,4 +1,4 @@
-/**
+/*
  * File Name: Recipe.js
  * Student's Name: Manoj Bishwakarma, LAxman Rokaya
  * Student ID: 200594681, 200562874
@@ -19,3 +19,4 @@ const recipeSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model("recipes", recipeSchema);
+

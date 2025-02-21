@@ -7,6 +7,7 @@
 
 const Recipe = require("../models/Recipe");
 
+
 exports.getRecipes = async (req, res) => {
     try {
         const recipes = await Recipe.find(); // Using mongoose's find method to get recipes
@@ -15,3 +16,4 @@ exports.getRecipes = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
+

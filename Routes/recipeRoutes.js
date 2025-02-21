@@ -14,3 +14,4 @@ const recipesController = require("../Controller/recipeController");
 router.get("/getAllRecipes", recipesController.getRecipes);
 
 module.exports = router;
+
