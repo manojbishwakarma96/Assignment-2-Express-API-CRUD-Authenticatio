@@ -1,21 +1,15 @@
 /**
- * File Name: Recipe.js
+ * File Name: recipeController.js
  * Student's Name: Manoj Bishwakarma, Laxman Rokaya
  * Student ID: 200594681, 200562874
- * Date: 2025-01-29
+ * Date: 2025-02-21
  */
 
-const mongoose = require("mongoose");
+const Recipe = require("../models/Recipe");
 
-const recipeSchema = new mongoose.Schema({
-  recipeName: String,
-  ingredients: [String],
-  cookingTime: Number,
-  difficulty: String,
-  cuisine: String,
-  description: String,
-  photoLink: String,
-  averageRating: Number,
-});
-
-module.exports = mongoose.model("recipes", recipeSchema);
+exports.getRecipes = async (req, res) => {
+    try {
+        const recipes = await Recipe.find(); // Using mongoose's find method to get recipes
+        res.status(200).json({ success: true, data: recipes });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
