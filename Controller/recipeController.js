@@ -5,7 +5,7 @@
  * Date: 2025-02-21
  */
 
-const Recipe = require("../models/Recipe");
+const Recipe = require("../Models/Recipe");
 
 // Get all recipes
 exports.getRecipes = async (req, res) => {
