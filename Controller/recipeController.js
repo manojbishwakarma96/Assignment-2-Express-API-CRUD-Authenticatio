@@ -1,10 +1,11 @@
 /**
- * File Name: recipesController.js
+ * File Name: recipeController.js
  * Student's Name: Manoj Bishwakarma, Laxman Rokaya
  * Student ID: 200594681, 200562874
- * Date: 2025-01-29
+ * Date: 2025-02-21
  */
-const Recipe = require("../Models/Recipe");
+
+const Recipe = require("../models/Recipe");
 
 exports.getRecipes = async (req, res) => {
   try {
