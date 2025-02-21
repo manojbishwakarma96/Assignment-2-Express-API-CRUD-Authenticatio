@@ -17,6 +17,7 @@ exports.getRecipes = async (req, res) => {
     }
 };
 
+//Controller for getRecipeById
 exports.getRecipeById = async (req, res) => {
     try {
         const recipe = await Recipe.findById(req.params.id);
