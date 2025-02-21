@@ -2,12 +2,15 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
+const recipeRoutes = require('./Routes/recipeRoutes');
+
 const { MongoClient } = require('mongodb');
 
 
 // Set the port
 const PORT = process.env.PORT || 3000;
 
+app.use('/api/recipes', recipeRoutes);
 
 // MongoDB connection URL
 const url = 'mongodb+srv://manojbishwakarma88:manoj123@recipesdatabase.iogvl.mongodb.net/';
