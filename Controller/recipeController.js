@@ -7,7 +7,7 @@
 
 const Recipe = require("../models/Recipe");
 
-
+// Get all recipes
 exports.getRecipes = async (req, res) => {
     try {
         const recipes = await Recipe.find(); 
@@ -17,7 +17,7 @@ exports.getRecipes = async (req, res) => {
     }
 };
 
-//Controller for getRecipeById
+// Get a recipe by ID
 exports.getRecipeById = async (req, res) => {
     try {
         const recipe = await Recipe.findById(req.params.id);
@@ -30,7 +30,7 @@ exports.getRecipeById = async (req, res) => {
     }
 };
 
-// Controller for creating a new recipe
+// Create a new recipe
 exports.createRecipe = async (req, res) => {
     try {
         const { title, ingredients, instructions, cookingTime, difficulty, servings } = req.body;
@@ -56,6 +56,32 @@ exports.createRecipe = async (req, res) => {
         res.status(201).json({
             success: true,
             message: "Recipe created successfully",
+            data: recipe
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+// Update a recipe by ID
+exports.updateRecipeById = async (req, res) => {
+    try {
+        const { title, ingredients, instructions, cookingTime, difficulty, servings } = req.body;
+
+        // Find and update the recipe
+        const recipe = await Recipe.findByIdAndUpdate(
+            req.params.id, 
+            { title, ingredients, instructions, cookingTime, difficulty, servings },
+            { new: true } // Return the updated document
+        );
+
+        if (!recipe) {
+            return res.status(404).json({ success: false, message: "Recipe not found" });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Recipe updated successfully",
             data: recipe
         });
     } catch (error) {
