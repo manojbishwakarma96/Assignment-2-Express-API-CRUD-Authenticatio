@@ -5,107 +5,93 @@
  * Date: 2025-02-21
  */
 
+
 const User = require('../Models/User');
-const jwt = require('jsonwebtoken');
+exports.registerUser = async(req,res)=>{
+    const{username,email,password} = req.body;
 
-// Register new user
-exports.register = async (req, res) => {
-    try {
-        const { username, email, password } = req.body;
-
-        // Check if user already exists
-        const existingUser = await User.findOne({ $or: [{ email }, { username }] });
-        if (existingUser) {
-            return res.status(400).json({
-                success: false,
-                message: 'User with this email or username already exists'
-            });
+    try{
+        //validate
+        if(!username || !email || !password){
+            return res.status(400).json({message:'All fields are required'});
         }
 
-        // Create new user
-        const user = await User.create({
-            username,
-            email,
-            password
+        //check if email is valid
+        if(typeof email !=='string' || email.trim() === ''){
+            return res.status(400).json({message:'Invalid email address'});
+        }
+        //check for existing user
+        const existingUser = await User.findOne({email});
+        if(existingUser){
+            return res.status(400).json({message:'Email is already in use'});
+        }
+
+        const newUser = new User({
+            username, email,password
         });
 
-        // Create token
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-            expiresIn: process.env.JWT_EXPIRE
-        });
+        await newUser.save();
+        return res.status(201).json({message:'User registerd succesfully'});
 
-        res.status(201).json({
-            success: true,
-            message: 'User registered successfully',
-            token
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
     }
-};
-
-// Login user
-exports.login = async (req, res) => {
-    try {
-        const { email, password } = req.body;
-
-        // Validate email and password
-        if (!email || !password) {
-            return res.status(400).json({
-                success: false,
-                message: 'Please provide email and password'
-            });
-        }
-
-        // Check for user
-        const user = await User.findOne({ email }).select('+password');
-        if (!user) {
-            return res.status(401).json({
-                success: false,
-                message: 'Invalid credentials'
-            });
-        }
-
-        // Check if password matches
-        const isMatch = await user.matchPassword(password);
-        if (!isMatch) {
-            return res.status(401).json({
-                success: false,
-                message: 'Invalid credentials'
-            });
-        }
-
-        // Create token
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-            expiresIn: process.env.JWT_EXPIRE
-        });
-
-        res.status(200).json({
-            success: true,
-            token
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
+    catch(error){
+        console.error('Error details: ', error);
+        return res.status(500).json({message:'Error registering user'});
     }
-};
+}
 
-// Logout user
-exports.logout = async (req, res) => {
-    try {
-        res.status(200).json({
-            success: true,
-            message: 'Logged out successfully'
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
+exports.loginUser = async(req,res)=>{
+    const{email,password}=req.body;
+
+    try{
+            //Validate
+            if(!email || !password){
+                return res.status(401).json({message:'All fields are required'});
+            }
+
+           
+            //Check for existing user
+
+            const user = await User.findOne({email});
+            if(!user){
+                return res.status(401).json({message:'Imvalid email or password'});
+            }
+            //Compare password with hashed password
+            const isPasswordValid = await bcrypt.compare(password,user.password);
+            if(!isPasswordValid){
+                return res.status(401).json({message:'Password does not match'});
+            }
+            //Succseful login
+            res.status(200).json({message:'Login succesful',userId:user._id});       
+          
     }
+
+    catch(error){
+        console.error('Error details: ',error);
+        res.status(500).json({message:'Error loggin in user'});
+    }
+}
+
+/*Manoj Bisghwakarma
+student id:200594681
+*/
+
+//logout function
+exports.logout = (req, res) => {
+    req.logout((err) => {
+        if (err) {
+            console.error("Logout error:", err);
+            return res.status(500).json({ message: "Error logging out" });
+        }
+// clearing session
+        req.session.destroy((err) => {
+            if (err) {
+                console.error("Session destroy error:", err);
+                return res.status(500).json({ message: "Error clearing session" });
+            }
+// Clears session cookie
+            res.clearCookie('connect.sid'); 
+            res.status(200).json({ message: "Logged out successfully!" });
+        });
+    });
 };
