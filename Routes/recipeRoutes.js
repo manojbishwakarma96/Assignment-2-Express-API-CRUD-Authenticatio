@@ -15,4 +15,7 @@ router.get("/getAllRecipes", recipesController.getRecipes);
 // Fetch a single recipe by ID
 router.get("/:id", recipesController.getRecipeById);
 
+// Create a new recipe
+router.post("/", recipesController.createRecipe);
+
 module.exports = router;
