@@ -9,15 +9,15 @@ const express = require('express');
 const passport = require('passport');
 const User = require('../Models/User');
 const router = express.Router();
-const authController = require('../Controller/userController');
+const userController = require('../Controller/userController');
 
-router.post('/register',authController.registerUser);
+router.post('/register',userController.registerUser);
 
 router.get('/login',passport.authenticate('local'),(req,res)=>{
     res.send('Looged in successfully');
 })
 
 //logout route
-router.post('/logout', authController.logout);
+router.post('/logout', userController.logout);
 
 module.exports = router;

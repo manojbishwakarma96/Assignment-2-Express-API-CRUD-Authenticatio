@@ -19,7 +19,6 @@ require('./config/passportConfig');
 //Intialize the app
 const app = express();
 
-//Middleware
 app.use(bodyParser.json());
 
 

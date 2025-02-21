@@ -39,7 +39,7 @@ exports.registerUser = async(req,res)=>{
         return res.status(500).json({message:'Error registering user'});
     }
 }
-
+//login user
 exports.loginUser = async(req,res)=>{
     const{email,password}=req.body;
 
@@ -72,9 +72,6 @@ exports.loginUser = async(req,res)=>{
     }
 }
 
-/*Manoj Bisghwakarma
-student id:200594681
-*/
 
 //logout function
 exports.logout = (req, res) => {
