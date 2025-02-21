@@ -72,18 +72,15 @@ exports.loginUser = async(req,res)=>{
     }
 }
 
-
-//logout function
+//loging out with the session
 exports.logout = (req, res) => {
     req.logout((err) => {
         if (err) {
-            console.error("Logout error:", err);
             return res.status(500).json({ message: "Error logging out" });
         }
 // clearing session
         req.session.destroy((err) => {
             if (err) {
-                console.error("Session destroy error:", err);
                 return res.status(500).json({ message: "Error clearing session" });
             }
 // Clears session cookie
@@ -92,3 +89,4 @@ exports.logout = (req, res) => {
         });
     });
 };
+
