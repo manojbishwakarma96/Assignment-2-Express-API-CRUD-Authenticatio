@@ -33,16 +33,9 @@ exports.getRecipeById = async (req, res) => {
 // Create a new recipe
 exports.createRecipe = async (req, res) => {
     try {
-        const { title, ingredients, instructions, cookingTime, difficulty, servings } = req.body;
+        const { title, ingredients, instructions, cookingTime, difficulty, servings, cuisine, description, photoLink, averageRating } = req.body;
 
-        // Validate required fields
-        if (!title || !ingredients || !instructions) {
-            return res.status(400).json({
-                success: false,
-                message: "Please provide title, ingredients, and instructions"
-            });
-        }
-
+      
         // Create new recipe
         const recipe = await Recipe.create({
             title,
@@ -50,19 +43,21 @@ exports.createRecipe = async (req, res) => {
             instructions,
             cookingTime,
             difficulty,
-            servings
+            servings,
+            cuisine,
+            description,
+            photoLink,
+            averageRating
         });
 
         res.status(201).json({
             success: true,
-            message: "Recipe created successfully",
             data: recipe
         });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
 };
-
 // Update a recipe by ID
 exports.updateRecipeById = async (req, res) => {
     try {
@@ -90,18 +85,3 @@ exports.updateRecipeById = async (req, res) => {
 };
  
 
-// Delete a recipe by ID
-exports.deleteRecipeById = async (req, res) => {
-    try {
-        const recipe = await Recipe.findByIdAndDelete(req.params.id);
-        if (!recipe) {
-            return res.status(404).json({ success: false, message: "Recipe not found" });
-        }
-        res.status(200).json({
-            success: true,
-            message: "Recipe deleted successfully"
-        });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
-};

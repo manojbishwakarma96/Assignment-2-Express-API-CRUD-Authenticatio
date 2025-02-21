@@ -10,6 +10,9 @@ const app = express();
 const recipesRoutes = require("./Routes/recipeRoutes");
 const mongoose = require("mongoose");
 
+const userRoutes = require('./Routes/userRoutes');
+app.use('/api/users', userRoutes);
+
 // Load environment variables from .env file
 require("dotenv").config();
 
@@ -32,6 +35,3 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-const userRoutes = require('./Routes/userRoutes');
-// ... (after other middleware)
-app.use('/api/users', userRoutes);
