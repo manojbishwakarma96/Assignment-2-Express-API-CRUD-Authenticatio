@@ -61,13 +61,13 @@ exports.createRecipe = async (req, res) => {
 // Update a recipe by ID
 exports.updateRecipeById = async (req, res) => {
     try {
-        const { recipeName, ingredients, instructions, cookingTime, difficulty, servings } = req.body;
-
+        const { recipeName, ingredients, instructions, cookingTime, difficulty, servings, cuisine,description, photoLink, averageRating} = req.body;
+s
         // Find and update the recipe
         const recipe = await Recipe.findByIdAndUpdate(
             req.params.id, 
-            { recipeName, ingredients, instructions, cookingTime, difficulty, servings },
-            { new: true } // Return the updated document
+            { recipeName, ingredients, instructions, cookingTime, difficulty, servings,cuisine,description, photoLink, averageRating },
+            { new: true } 
         );
 
         if (!recipe) {
