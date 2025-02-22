@@ -13,7 +13,7 @@ const recipesController = require("../Controller/recipeController");
 router.get("/getAllRecipes", recipesController.getRecipes);
 
 // Fetch a single recipe by ID
-router.get("/recipe/:id", recipesController.getRecipeById);
+router.get("/getRecipeById/:id", recipesController.getRecipeById);
 
 // Create a new recipe
 router.post("/create", recipesController.createRecipe);
