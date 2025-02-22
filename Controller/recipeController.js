@@ -33,12 +33,12 @@ exports.getRecipeById = async (req, res) => {
 // Create a new recipe
 exports.createRecipe = async (req, res) => {
     try {
-        const { title, ingredients, instructions, cookingTime, difficulty, servings, cuisine, description, photoLink, averageRating } = req.body;
+        const { recipeName, ingredients, instructions, cookingTime, difficulty, servings, cuisine, description, photoLink, averageRating } = req.body;
 
       
         // Create new recipe
         const recipe = await Recipe.create({
-            title,
+            recipeName,
             ingredients,
             instructions,
             cookingTime,
